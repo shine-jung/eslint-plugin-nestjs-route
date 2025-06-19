@@ -67,6 +67,28 @@ ruleTester.run("route-order", rule, {
         }
       `,
     },
+    {
+      code: `
+        class UserController {
+          @Get(':id')
+          getUser() {}
+          
+          @Post('create')
+          createUser() {}
+        }
+      `,
+    },
+    {
+      code: `
+        class UserController {
+          @Post(':id')
+          updateUser() {}
+          
+          @Get('me')
+          getMe() {}
+        }
+      `,
+    },
   ],
   invalid: [
     // 비정상 케이스: static route가 parameterized route 뒤에 오는 경우
@@ -173,7 +195,7 @@ ruleTester.run("route-order", rule, {
           @Post(':id')
           updateUser() {}
           
-          @Put('create')
+          @Post('create')
           createUser() {}
         }
       `,
@@ -188,7 +210,7 @@ ruleTester.run("route-order", rule, {
       ],
       output: `
         class UserController {
-          @Put('create')
+          @Post('create')
           createUser() {}
           
           @Post(':id')

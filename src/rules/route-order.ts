@@ -3,8 +3,8 @@ import { ROUTE_ORDER_MESSAGES } from "../constants";
 import type { ClassBodyNode } from "../types";
 import { createRouteFixer } from "../utils/fixer";
 import { getRouteOrderMessage } from "../utils/message";
-import { extractRouteInfos } from "../utils/route";
 import {
+  findViolatingRoutesInSameMethod,
   getMethodElementsWithDecorators,
   sortMethodElementsByRoute,
 } from "../utils/route-sorter";
@@ -39,13 +39,15 @@ const rule: Rule.RuleModule = {
   create(context: Rule.RuleContext) {
     return {
       ClassBody(node: ClassBodyNode) {
-        const routeInfos = extractRouteInfos(node);
-        if (routeInfos.length < 2) return;
+        const methodElements = getMethodElementsWithDecorators(node.body);
+        if (methodElements.length < 2) return;
 
-        const firstParamRoute = routeInfos.find((info) => !info.isStatic);
+        const violationResult = findViolatingRoutesInSameMethod(methodElements);
+        if (!violationResult) return;
+
+        const { violatingRoute, firstParamRoute } = violationResult;
         if (!firstParamRoute) return;
 
-        const methodElements = getMethodElementsWithDecorators(node.body);
         const { originalElements, sortedElements, needsReordering } =
           sortMethodElementsByRoute(methodElements);
 
@@ -53,23 +55,15 @@ const rule: Rule.RuleModule = {
 
         const messageId = getRouteOrderMessage(context.options[0]);
 
-        let foundParamRoute = false;
-        for (const info of routeInfos) {
-          if (!info.isStatic) {
-            foundParamRoute = true;
-          } else if (foundParamRoute) {
-            context.report({
-              node: info.node,
-              messageId,
-              data: {
-                static: info.path,
-                param: firstParamRoute.path,
-              },
-              fix: createRouteFixer(context, originalElements, sortedElements),
-            });
-            break;
-          }
-        }
+        context.report({
+          node: violatingRoute.node,
+          messageId,
+          data: {
+            static: violatingRoute.path,
+            param: firstParamRoute.path,
+          },
+          fix: createRouteFixer(context, originalElements, sortedElements),
+        });
       },
     };
   },

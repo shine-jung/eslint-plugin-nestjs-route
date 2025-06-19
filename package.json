@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-nestjs-route",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "ESLint rules for NestJS route management - ensure proper route ordering and prevent duplicates.",
   "main": "lib/src/index.js",
   "types": "lib/src/index.d.ts",
