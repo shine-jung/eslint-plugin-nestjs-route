@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-nestjs-route",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "ESLint rules for NestJS route management - ensure proper route ordering and prevent duplicates.",
   "main": "lib/src/index.js",
   "types": "lib/src/index.d.ts",
@@ -43,7 +43,7 @@
   "bugs": {
     "url": "https://github.com/shine-jung/eslint-plugin-nestjs-route/issues"
   },
-  "homepage": "https://github.com/shine-jung/eslint-plugin-nestjs-route#readme",
+  "homepage": "https://shine-jung.github.io/eslint-plugin-nestjs-route/",
   "funding": {
     "type": "github",
     "url": "https://github.com/sponsors/shine-jung"
