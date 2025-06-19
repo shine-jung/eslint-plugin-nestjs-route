@@ -80,7 +80,9 @@
     "type-check": "tsc --noEmit",
     "prepublishOnly": "npm run clean && npm run build && npm test",
     "prepare": "npm run build",
-    "semantic-release": "semantic-release"
+    "semantic-release": "semantic-release",
+    "docs:serve": "cd docs && python3 -m http.server 8080",
+    "docs:dev": "cd docs && python3 -m http.server 3000"
   },
   "jest": {
     "preset": "ts-jest",

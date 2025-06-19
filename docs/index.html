@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ESLint Plugin NestJS Route</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/monokai.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/eslint/8.56.0/eslint.min.js"></script>
+    <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg" />
+    <style>
+      .CodeMirror {
+        border: 1px solid #e5e7eb;
+        border-radius: 0.5rem;
+        font-size: 14px;
+        height: 300px;
+      }
+      .language-switch {
+        transition: transform 0.2s ease;
+      }
+      .language-switch:hover {
+        transform: scale(1.05);
+      }
+      .section {
+        scroll-margin-top: 80px;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm fixed w-full top-0 z-50">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center py-4">
+          <div class="flex items-center space-x-3">
+            <div
+              class="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center"
+            >
+              <span class="text-white font-bold text-sm">NR</span>
+            </div>
+            <h1 class="text-xl font-bold text-gray-900">
+              eslint-plugin-nestjs-route
+            </h1>
+          </div>
+          <div class="flex items-center space-x-4">
+            <button
+              id="langToggle"
+              class="language-switch bg-blue-100 text-blue-700 px-3 py-1 rounded-lg text-sm font-medium hover:bg-blue-200"
+            >
+              한국어
+            </button>
+            <a
+              href="https://github.com/shine-jung/eslint-plugin-nestjs-route"
+              class="text-gray-600 hover:text-gray-900 transition-colors"
+            >
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+                />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-20 pb-12 bg-gradient-to-br from-purple-50 to-pink-50">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center">
+          <h2 id="hero-title" class="text-4xl font-bold text-gray-900 mb-4">
+            ESLint Rules for NestJS Route Management
+          </h2>
+          <p
+            id="hero-subtitle"
+            class="text-xl text-gray-600 mb-8 max-w-3xl mx-auto"
+          >
+            Ensure proper route ordering and prevent duplicates in your NestJS
+            controllers.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a
+              href="#playground"
+              class="bg-purple-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-purple-700 transition-colors"
+            >
+              <span id="try-playground">Try Playground</span>
+            </a>
+            <a
+              href="#installation"
+              class="bg-white text-purple-600 px-6 py-3 rounded-lg font-medium border border-purple-200 hover:bg-purple-50 transition-colors"
+            >
+              <span id="get-started">Get Started</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="py-16 section">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h3
+          id="features-title"
+          class="text-3xl font-bold text-center text-gray-900 mb-12"
+        >
+          Features
+        </h3>
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="bg-white p-6 rounded-xl shadow-sm border">
+            <div
+              class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4"
+            >
+              <svg
+                class="w-6 h-6 text-blue-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"
+                />
+              </svg>
+            </div>
+            <h4
+              id="feature-order-title"
+              class="text-xl font-semibold text-gray-900 mb-2"
+            >
+              Route Order
+            </h4>
+            <p id="feature-order-desc" class="text-gray-600">
+              Ensures static routes are placed before parameterized routes to
+              prevent unexpected routing bugs.
+            </p>
+          </div>
+          <div class="bg-white p-6 rounded-xl shadow-sm border">
+            <div
+              class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-4"
+            >
+              <svg
+                class="w-6 h-6 text-red-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L4.232 16.5c-.77.833.192 2.5 1.732 2.5z"
+                />
+              </svg>
+            </div>
+            <h4
+              id="feature-duplicate-title"
+              class="text-xl font-semibold text-gray-900 mb-2"
+            >
+              No Duplicates
+            </h4>
+            <p id="feature-duplicate-desc" class="text-gray-600">
+              Prevents duplicate route definitions within the same controller to
+              avoid routing conflicts.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Playground -->
+    <section id="playground" class="py-16 bg-white section">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h3
+          id="playground-title"
+          class="text-3xl font-bold text-center text-gray-900 mb-12"
+        >
+          Playground
+        </h3>
+        <div class="bg-gray-50 rounded-xl p-6">
+          <div class="mb-6">
+            <h4
+              id="playground-subtitle"
+              class="text-lg font-semibold text-gray-900 mb-4"
+            >
+              Try the ESLint rules with your NestJS controller code:
+            </h4>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <button
+                id="example1"
+                class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600 transition-colors"
+              >
+                <span class="example-btn">Example 1: Route Order</span>
+              </button>
+              <button
+                id="example2"
+                class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600 transition-colors"
+              >
+                <span class="example-btn">Example 2: Duplicates</span>
+              </button>
+              <button
+                id="example3"
+                class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600 transition-colors"
+              >
+                <span class="example-btn">Example 3: Valid</span>
+              </button>
+            </div>
+          </div>
+          <textarea id="codeEditor" class="w-full"></textarea>
+          <div class="mt-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+              <label
+                for="localeSelect"
+                id="locale-label"
+                class="text-sm font-medium text-gray-700"
+                >Language:</label
+              >
+              <select
+                id="localeSelect"
+                class="border border-gray-300 rounded px-2 py-1 text-sm"
+              >
+                <option value="en">English</option>
+                <option value="ko">한국어</option>
+              </select>
+            </div>
+            <button
+              id="lintButton"
+              class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 transition-colors"
+            >
+              <span id="lint-btn-text">Lint Code</span>
+            </button>
+          </div>
+          <div id="results" class="mt-6 hidden">
+            <h5
+              id="results-title"
+              class="text-lg font-semibold text-gray-900 mb-3"
+            >
+              Results:
+            </h5>
+            <div
+              id="resultsContent"
+              class="bg-white rounded-lg p-4 border"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Installation -->
+    <section id="installation" class="py-16 bg-gray-50 section">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h3
+          id="installation-title"
+          class="text-3xl font-bold text-center text-gray-900 mb-12"
+        >
+          Installation
+        </h3>
+        <div class="bg-white rounded-xl p-8 shadow-sm">
+          <h4
+            id="install-subtitle"
+            class="text-xl font-semibold text-gray-900 mb-4"
+          >
+            Install via npm:
+          </h4>
+          <div
+            class="bg-gray-900 text-green-400 p-4 rounded-lg font-mono text-sm mb-6"
+          >
+            npm install --save-dev eslint-plugin-nestjs-route
+          </div>
+
+          <h4
+            id="config-subtitle"
+            class="text-xl font-semibold text-gray-900 mt-8 mb-4"
+          >
+            ESLint Configuration:
+          </h4>
+          <div
+            class="bg-gray-900 text-gray-100 p-4 rounded-lg font-mono text-sm overflow-x-auto"
+          >
+            <pre id="config-example">
+// eslint.config.js (ESLint v9+)
+const nestjsRoute = require("eslint-plugin-nestjs-route");
+
+module.exports = [
+  {
+    files: ["**/*.ts"],
+    plugins: {
+      "nestjs-route": nestjsRoute,
+    },
+    rules: {
+      "nestjs-route/order": "error",
+      "nestjs-route/no-duplicates": "error",
+    },
+  },
+];</pre
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Rules -->
+    <section id="rules" class="py-16 bg-white section">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h3
+          id="rules-title"
+          class="text-3xl font-bold text-center text-gray-900 mb-12"
+        >
+          Rules
+        </h3>
+        <div class="space-y-8">
+          <div class="bg-gray-50 rounded-xl p-8">
+            <h4 class="text-2xl font-semibold text-gray-900 mb-4">
+              nestjs-route/order
+            </h4>
+            <p id="order-desc" class="text-gray-600 mb-6">
+              Ensures static routes are placed before parameterized routes in
+              NestJS controllers.
+            </p>
+            <div class="grid md:grid-cols-2 gap-6">
+              <div>
+                <h5
+                  id="correct-label"
+                  class="text-lg font-medium text-green-700 mb-3"
+                >
+                  ✅ Correct:
+                </h5>
+                <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                  <pre class="text-sm text-green-800"><code>@Get('me')
+@Get(':id')</code></pre>
+                </div>
+              </div>
+              <div>
+                <h5
+                  id="incorrect-label"
+                  class="text-lg font-medium text-red-700 mb-3"
+                >
+                  ❌ Incorrect:
+                </h5>
+                <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+                  <pre class="text-sm text-red-800"><code>@Get(':id')
+@Get('me') // Will be auto-fixed</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-gray-50 rounded-xl p-8">
+            <h4 class="text-2xl font-semibold text-gray-900 mb-4">
+              nestjs-route/no-duplicates
+            </h4>
+            <p id="duplicates-desc" class="text-gray-600 mb-6">
+              Prevents duplicate route definitions within the same controller.
+            </p>
+            <div class="grid md:grid-cols-2 gap-6">
+              <div>
+                <h5
+                  id="correct-label2"
+                  class="text-lg font-medium text-green-700 mb-3"
+                >
+                  ✅ Correct:
+                </h5>
+                <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                  <pre class="text-sm text-green-800"><code>@Get('users')
+@Post('users') // Different method</code></pre>
+                </div>
+              </div>
+              <div>
+                <h5
+                  id="incorrect-label2"
+                  class="text-lg font-medium text-red-700 mb-3"
+                >
+                  ❌ Incorrect:
+                </h5>
+                <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+                  <pre class="text-sm text-red-800"><code>@Get('users')
+@Get('users') // Duplicate route</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center">
+          <div class="flex items-center justify-center space-x-3 mb-4">
+            <div
+              class="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center"
+            >
+              <span class="text-white font-bold text-sm">NR</span>
+            </div>
+            <h3 class="text-xl font-bold">eslint-plugin-nestjs-route</h3>
+          </div>
+          <p id="footer-desc" class="text-gray-400 mb-6">
+            ESLint rules for NestJS route management
+          </p>
+          <div class="flex justify-center space-x-6">
+            <a
+              href="https://github.com/shine-jung/eslint-plugin-nestjs-route"
+              class="text-gray-400 hover:text-white transition-colors"
+            >
+              GitHub
+            </a>
+            <a
+              href="https://www.npmjs.com/package/eslint-plugin-nestjs-route"
+              class="text-gray-400 hover:text-white transition-colors"
+            >
+              npm
+            </a>
+          </div>
+          <div class="mt-8 pt-8 border-t border-gray-800 text-sm text-gray-400">
+            <p>&copy; 2024 shine-jung. Licensed under MIT.</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="./js/playground.js"></script>
+    <script src="./js/i18n.js"></script>
+  </body>
+</html>
